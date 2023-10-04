@@ -1,10 +1,13 @@
 import { HTTP_CODE_ERRORS } from "@/constants";
 import { Category } from "@/models";
+import { TCategory, TUpdateCategory } from "@/types";
 import { isEmpty } from "@/utils";
 
-export const createCategory = async (req: Request): Promise<Response> => {
-  const body = await req.json();
-  const userId = req.headers.get("userId");
+export const createCategory = async ({
+  body,
+  headers,
+}: TCategory): Promise<Response> => {
+  const userId = headers.userId;
 
   if (isEmpty(body)) {
     return new Response(JSON.stringify({ message: "Missing field" }), {
@@ -37,17 +40,10 @@ export const createCategory = async (req: Request): Promise<Response> => {
   }
 };
 
-interface IUpdateCategory {
-  request: Request;
-  params: { id: string };
-}
-
 export const updateCategory = async ({
-  request,
-  params,
-}: IUpdateCategory): Promise<Response> => {
-  const body = await request.json();
-
+  body,
+  params: { id },
+}: TUpdateCategory | any): Promise<Response> => {
   if (isEmpty(body)) {
     return new Response(JSON.stringify({ message: "Missing field" }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
@@ -57,7 +53,7 @@ export const updateCategory = async ({
   try {
     const category = await Category.findByIdAndUpdate(
       {
-        _id: params.id,
+        _id: id,
       },
       body,
       {

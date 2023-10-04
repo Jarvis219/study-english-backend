@@ -1,5 +1,5 @@
 import { Context } from "elysia";
-import { IHeaders } from "./context.types";
+import { IHeaders } from ".";
 
 interface IRegisterUser {
   email: string;

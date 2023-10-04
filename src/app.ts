@@ -2,7 +2,7 @@ import cors from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import { prefixDefaultApi } from "./constants";
 import { connectDB } from "./database";
-import { AuthGroupApi } from "./routers";
+import { AuthGroupApi, CategoryGroupApi } from "./routers";
 
 connectDB();
 
@@ -18,7 +18,9 @@ app.use(
   })
 );
 
-app.group(prefixDefaultApi, (api) => api.use(AuthGroupApi));
+app.group(prefixDefaultApi, (api) =>
+  api.use(AuthGroupApi).use(CategoryGroupApi)
+);
 
 app.listen(process.env.PORT || 3000, () =>
   console.log(

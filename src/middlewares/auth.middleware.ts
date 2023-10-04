@@ -1,14 +1,10 @@
 import { HTTP_CODE_ERRORS } from "@/constants";
-import { IHeaders } from "@/types";
 import { verify } from "jsonwebtoken";
 
-interface IAuthMiddleware {
-  headers: IHeaders;
-}
-
+// TODO: Add type for headersß
 export const authMiddleware = async ({
   headers,
-}: IAuthMiddleware): Promise<Response | undefined> => {
+}: any): Promise<Response | undefined> => {
   const token = headers?.authorization;
 
   if (!token) {
@@ -16,7 +12,9 @@ export const authMiddleware = async ({
       status: HTTP_CODE_ERRORS.UNAUTHORIZED,
     });
   }
+
   const [_, tokenValue] = token.split("Bearer ");
+
   if (!tokenValue) {
     return new Response(JSON.stringify({ message: "Missing token" }), {
       status: HTTP_CODE_ERRORS.UNAUTHORIZED,
