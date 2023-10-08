@@ -23,3 +23,7 @@ export type TUpdateCategory = Context & {
   body: ICategoryUpdate;
   params: Record<"id", string>;
 };
+
+export type TDeleteCategory = Context & {
+  params: Record<"id", string>;
+};

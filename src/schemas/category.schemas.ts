@@ -12,10 +12,18 @@ export const createCategorySchemas = {
 };
 
 export const updateCategorySchemas = {
+  beforeHandle: [authMiddleware],
   body: t.Object({
     name: t.Optional(t.String()),
     description: t.Optional(t.String()),
     image: t.Optional(t.String()),
   }),
   type: "application/json",
+};
+
+export const deleteCategorySchemas = {
+  beforeHandle: [authMiddleware],
+  params: t.Object({
+    id: t.String(),
+  }),
 };

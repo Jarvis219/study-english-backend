@@ -1,8 +1,10 @@
+import bearer from "@elysiajs/bearer";
 import cors from "@elysiajs/cors";
+import jwt from "@elysiajs/jwt";
 import { Elysia } from "elysia";
 import { prefixDefaultApi } from "./constants";
 import { connectDB } from "./database";
-import { AuthGroupApi, CategoryGroupApi } from "./routers";
+import { AuthGroupApi, CategoryGroupApi, VocabularyGroupApi } from "./routers";
 
 connectDB();
 
@@ -18,8 +20,17 @@ app.use(
   })
 );
 
+app.use(bearer());
+app.use(
+  jwt({
+    name: "jwt",
+    secret: process.env.JWT_SECRET_KEY as string,
+    exp: "60d",
+  })
+);
+
 app.group(prefixDefaultApi, (api) =>
-  api.use(AuthGroupApi).use(CategoryGroupApi)
+  api.use(AuthGroupApi).use(CategoryGroupApi).use(VocabularyGroupApi)
 );
 
 app.listen(process.env.PORT || 3000, () =>

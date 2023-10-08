@@ -2,10 +2,12 @@ import { HTTP_CODE_ERRORS } from "@/constants";
 import { User } from "@/models";
 import { TLogin, TLogout, TRegister } from "@/types";
 import { Context } from "elysia";
-import { sign } from "jsonwebtoken";
 
 // Register
-export const registerUser = async ({ body }: TRegister): Promise<Response> => {
+export const registerUser = async ({
+  body,
+  jwt,
+}: TRegister): Promise<Response> => {
   if (!body.email || !body.password || !body.name) {
     return new Response(JSON.stringify({ message: "Missing field" }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
@@ -37,14 +39,16 @@ export const registerUser = async ({ body }: TRegister): Promise<Response> => {
   }
 
   // create token and login
-  const token = buildToken(userSaved._id.toString());
+  const token = await jwt.sign({
+    userId: userSaved._id.toString(),
+  });
   userSaved.token = token;
 
   return new Response(JSON.stringify(userSaved));
 };
 
 // Login
-export const loginUser = async ({ body }: TLogin): Promise<Response> => {
+export const loginUser = async ({ body, jwt }: TLogin): Promise<Response> => {
   if (!body.email || !body.password) {
     return new Response(JSON.stringify({ message: "Missing field" }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
@@ -79,7 +83,9 @@ export const loginUser = async ({ body }: TLogin): Promise<Response> => {
     );
   }
 
-  const token = buildToken(user._id.toString());
+  const token = await jwt.sign({
+    userId: user._id.toString(),
+  });
   user.token = token;
 
   return new Response(JSON.stringify(user));
@@ -117,7 +123,10 @@ export const logoutUser = async ({
 
 // TODO: refactor this func
 // Login with Google account
-export const loginWithGoogle = async (req: Request): Promise<Response> => {
+export const loginWithGoogle = async (
+  req: Request,
+  jwt: any
+): Promise<Response> => {
   const body = await req.json();
 
   if (!body.email || !body.name) {
@@ -150,7 +159,9 @@ export const loginWithGoogle = async (req: Request): Promise<Response> => {
     }
   }
 
-  const token = buildToken(user._id.toString());
+  const token = await jwt.sign({
+    userId: user._id.toString(),
+  });
   user.token = token;
 
   return new Response(JSON.stringify(user));
@@ -207,21 +218,6 @@ export const resetPassword = async (req: Request): Promise<Response> => {
   } catch (error) {
     return new Response(JSON.stringify(error));
   }
-};
-
-const buildToken = (_id: string): string => {
-  const expires = "60 days";
-  const token = sign(
-    {
-      _id,
-    },
-    process.env.JWT_SECRET_KEY as string,
-    {
-      expiresIn: expires,
-    }
-  );
-
-  return token;
 };
 
 // TODO: update info user

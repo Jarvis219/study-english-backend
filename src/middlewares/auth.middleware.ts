@@ -1,35 +1,36 @@
 import { HTTP_CODE_ERRORS } from "@/constants";
-import { verify } from "jsonwebtoken";
+import { User } from "@/models";
 
 // TODO: Add type for headersß
 export const authMiddleware = async ({
   headers,
+  bearer,
+  jwt,
 }: any): Promise<Response | undefined> => {
-  const token = headers?.authorization;
-
-  if (!token) {
-    return new Response(JSON.stringify({ message: "Missing token" }), {
-      status: HTTP_CODE_ERRORS.UNAUTHORIZED,
-    });
-  }
-
-  const [_, tokenValue] = token.split("Bearer ");
-
-  if (!tokenValue) {
+  if (!bearer) {
     return new Response(JSON.stringify({ message: "Missing token" }), {
       status: HTTP_CODE_ERRORS.UNAUTHORIZED,
     });
   }
 
   try {
-    const { _id } = verify(
-      tokenValue,
-      process.env.JWT_SECRET_KEY as string
-    ) as {
-      _id: string;
-    };
+    const { userId } = await jwt.verify(bearer);
 
-    headers.userId = _id;
+    if (!userId) {
+      return new Response(JSON.stringify({ message: "Token is not valid" }), {
+        status: HTTP_CODE_ERRORS.UNAUTHORIZED,
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return new Response(JSON.stringify({ message: "Account is not exist" }), {
+        status: HTTP_CODE_ERRORS.BAD_REQUEST,
+      });
+    }
+
+    headers.userId = userId;
   } catch (error) {
     return new Response(JSON.stringify({ message: "Token is not valid" }), {
       status: HTTP_CODE_ERRORS.UNAUTHORIZED,

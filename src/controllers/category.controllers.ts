@@ -1,27 +1,19 @@
 import { HTTP_CODE_ERRORS } from "@/constants";
-import { Category } from "@/models";
-import { TCategory, TUpdateCategory } from "@/types";
+import { Category, Vocabulary } from "@/models";
+import { TCategory, TDeleteCategory, TUpdateCategory } from "@/types";
 import { isEmpty } from "@/utils";
 
 export const createCategory = async ({
   body,
   headers,
 }: TCategory): Promise<Response> => {
-  const userId = headers.userId;
-
   if (isEmpty(body)) {
     return new Response(JSON.stringify({ message: "Missing field" }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
     });
   }
 
-  if (!userId) {
-    return new Response(JSON.stringify({ message: "Missing userId" }), {
-      status: HTTP_CODE_ERRORS.BAD_REQUEST,
-    });
-  }
-
-  body.userId = userId;
+  body.userId = headers.userId;
 
   // Check name category is exist
   const nameIsExit = await Category.findOne({ name: body.name });
@@ -61,6 +53,37 @@ export const updateCategory = async ({
       }
     );
     return new Response(JSON.stringify(category));
+  } catch (error) {
+    return new Response(JSON.stringify(error));
+  }
+};
+
+export const deleteCategory = async ({
+  params: { id },
+}: TDeleteCategory | any): Promise<Response> => {
+  const vocabularies = (await Vocabulary.find({ categoryId: id })) || [];
+
+  if (vocabularies.length) {
+    return new Response(JSON.stringify({ message: "Category is using" }), {
+      status: HTTP_CODE_ERRORS.BAD_REQUEST,
+    });
+  }
+
+  const category = await Category.findById(id);
+
+  if (!category) {
+    return new Response(JSON.stringify({ message: "Category is not exist" }), {
+      status: HTTP_CODE_ERRORS.BAD_REQUEST,
+    });
+  }
+
+  try {
+    await Category.findByIdAndDelete(id);
+    return new Response(
+      JSON.stringify({
+        message: "Delete category successfully",
+      })
+    );
   } catch (error) {
     return new Response(JSON.stringify(error));
   }

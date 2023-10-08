@@ -6,10 +6,10 @@
     "dev": "bun run --watch src/app.ts"
   },
   "dependencies": {
+    "@elysiajs/bearer": "^0.7.0",
     "@elysiajs/cors": "^0.7.1",
-    "@types/jsonwebtoken": "^9.0.3",
+    "@elysiajs/jwt": "^0.7.0",
     "elysia": "latest",
-    "jsonwebtoken": "8.5.1",
     "mongoose": "^7.5.3"
   },
   "devDependencies": {

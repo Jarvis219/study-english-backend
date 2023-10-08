@@ -13,10 +13,12 @@ interface IRegisterUser {
 }
 
 export type TRegister = Context & {
+  jwt: any;
   body: IRegisterUser;
 };
 
 export type TLogin = Context & {
+  jwt: any;
   body: {
     email: string;
     password: string;

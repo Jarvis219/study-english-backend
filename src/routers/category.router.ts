@@ -1,5 +1,9 @@
-import { createCategory, updateCategory } from "@/controllers";
-import { createCategorySchemas, updateCategorySchemas } from "@/schemas";
+import { createCategory, deleteCategory, updateCategory } from "@/controllers";
+import {
+  createCategorySchemas,
+  deleteCategorySchemas,
+  updateCategorySchemas,
+} from "@/schemas";
 import Elysia from "elysia";
 
 export const CategoryGroupApi = (api: Elysia): Elysia =>
@@ -7,4 +11,5 @@ export const CategoryGroupApi = (api: Elysia): Elysia =>
     category
       .post("/", createCategory, createCategorySchemas)
       .post("/:id", updateCategory, updateCategorySchemas)
+      .delete("/:id", deleteCategory, deleteCategorySchemas)
   );
