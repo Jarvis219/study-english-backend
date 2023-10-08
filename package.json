@@ -6,7 +6,8 @@
     "dev": "bun run --watch src/app.ts",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@elysiajs/bearer": "^0.7.0",
@@ -18,9 +19,11 @@
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "mongoose": "^7.5.3",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
     "bun-types": "latest"
@@ -28,6 +31,18 @@
   "module": "src/app.js",
   "type": "module",
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "bun run type-check"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "bun lint:fix",
+      "bun format"
+    ]
   }
 }
