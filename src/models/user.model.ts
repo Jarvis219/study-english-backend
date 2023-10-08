@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema(
   {
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-);
+)
 
-export type User = mongoose.InferSchemaType<typeof userSchema>;
-export const User = mongoose.model("User", userSchema);
+export type TUser = mongoose.InferSchemaType<typeof userSchema>
+export const User = mongoose.model('User', userSchema)

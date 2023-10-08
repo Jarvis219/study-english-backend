@@ -1,1 +1,1 @@
-export const prefixDefaultApi = "/api";
+export const prefixDefaultApi = '/api'

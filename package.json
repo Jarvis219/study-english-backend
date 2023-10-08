@@ -3,17 +3,31 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/app.ts"
+    "dev": "bun run --watch src/app.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "@elysiajs/bearer": "^0.7.0",
     "@elysiajs/cors": "^0.7.1",
     "@elysiajs/jwt": "^0.7.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
     "elysia": "latest",
-    "mongoose": "^7.5.3"
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "mongoose": "^7.5.3",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "bun-types": "latest"
   },
-  "module": "src/app.js"
+  "module": "src/app.js",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
 }

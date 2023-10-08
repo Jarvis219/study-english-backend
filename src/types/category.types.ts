@@ -1,29 +1,29 @@
-import { Context } from "elysia";
-import { IHeaders } from ".";
+import { Context } from 'elysia'
+import { IHeaders } from '.'
 
 interface ICategory {
-  name: string;
-  description: string;
-  image: string;
-  userId?: string;
+  name: string
+  description: string
+  image: string
+  userId?: string
 }
 
 interface ICategoryUpdate {
-  name?: string;
-  description?: string;
-  image?: string;
+  name?: string
+  description?: string
+  image?: string
 }
 
 export type TCategory = Context & {
-  body: ICategory;
-  headers: IHeaders;
-};
+  body: ICategory
+  headers: IHeaders
+}
 
 export type TUpdateCategory = Context & {
-  body: ICategoryUpdate;
-  params: Record<"id", string>;
-};
+  body: ICategoryUpdate
+  params: Record<'id', string>
+}
 
 export type TDeleteCategory = Context & {
-  params: Record<"id", string>;
-};
+  params: Record<'id', string>
+}

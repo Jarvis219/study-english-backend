@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose'
 
 const vocabularySchema = new mongoose.Schema(
   {
@@ -15,19 +15,19 @@ const vocabularySchema = new mongoose.Schema(
     rewriteNumber: { type: Number, required: true, default: 0 },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
       required: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
   },
   {
     timestamps: true,
   }
-);
+)
 
-export type Vocabulary = mongoose.InferSchemaType<typeof vocabularySchema>;
-export const Vocabulary = mongoose.model("Vocabulary", vocabularySchema);
+export type TVocabulary = mongoose.InferSchemaType<typeof vocabularySchema>
+export const Vocabulary = mongoose.model('Vocabulary', vocabularySchema)

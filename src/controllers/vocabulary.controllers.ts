@@ -1,58 +1,58 @@
-import { HTTP_CODE_ERRORS } from "@/constants";
-import { Vocabulary } from "@/models";
+import { HTTP_CODE_ERRORS } from '@/constants'
+import { Vocabulary } from '@/models'
 import {
   TVocabulary,
   TVocabularyDelete,
   TVocabularyGet,
   TVocabularyGetById,
   TVocabularyUpdate,
-} from "@/types";
-import { isEmpty } from "@/utils";
+} from '@/types'
+import { isEmpty } from '@/utils'
 
 export const createVocabulary = async ({
   headers,
   body,
 }: TVocabulary): Promise<Response> => {
   if (!body.categoryId) {
-    return new Response(JSON.stringify({ message: "Missing categoryId" }), {
+    return new Response(JSON.stringify({ message: 'Missing categoryId' }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
-    });
+    })
   }
 
   if (!body.word) {
-    return new Response(JSON.stringify({ message: "Missing word" }), {
+    return new Response(JSON.stringify({ message: 'Missing word' }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
-    });
+    })
   }
 
   if (!body.meaning) {
-    return new Response(JSON.stringify({ message: "Missing meaning" }), {
+    return new Response(JSON.stringify({ message: 'Missing meaning' }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
-    });
+    })
   }
 
-  body.userId = headers.userId;
+  body.userId = headers.userId
 
   try {
-    const vocabulary = new Vocabulary(body);
-    const vocabularySaved = await vocabulary.save();
-    return new Response(JSON.stringify(vocabularySaved));
+    const vocabulary = new Vocabulary(body)
+    const vocabularySaved = await vocabulary.save()
+    return new Response(JSON.stringify(vocabularySaved))
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    return new Response(JSON.stringify(error))
   }
-};
+}
 
 export const getVocabulary = async ({
   headers,
 }: TVocabularyGet | any): Promise<Response> => {
   try {
     const vocabularies =
-      (await Vocabulary.find({ userId: headers.userId })) || [];
-    return new Response(JSON.stringify(vocabularies));
+      (await Vocabulary.find({ userId: headers.userId })) || []
+    return new Response(JSON.stringify(vocabularies))
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    return new Response(JSON.stringify(error))
   }
-};
+}
 
 export const getVocabularyById = async ({
   headers,
@@ -63,12 +63,12 @@ export const getVocabularyById = async ({
       (await Vocabulary.findOne({
         userId: headers.userId,
         _id: id,
-      })) || [];
-    return new Response(JSON.stringify(vocabulary));
+      })) || []
+    return new Response(JSON.stringify(vocabulary))
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    return new Response(JSON.stringify(error))
   }
-};
+}
 
 export const updateVocabulary = async ({
   body,
@@ -76,9 +76,9 @@ export const updateVocabulary = async ({
   params: { id },
 }: TVocabularyUpdate | any): Promise<Response> => {
   if (isEmpty(body)) {
-    return new Response(JSON.stringify({ message: "Missing field" }), {
+    return new Response(JSON.stringify({ message: 'Missing field' }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
-    });
+    })
   }
 
   try {
@@ -86,12 +86,12 @@ export const updateVocabulary = async ({
       { userId: headers.userId, _id: id },
       body,
       { new: true }
-    );
-    return new Response(JSON.stringify(vocabulary));
+    )
+    return new Response(JSON.stringify(vocabulary))
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    return new Response(JSON.stringify(error))
   }
-};
+}
 
 export const deleteVocabulary = async ({
   headers,
@@ -100,22 +100,22 @@ export const deleteVocabulary = async ({
   const vocabulary = await Vocabulary.findOne({
     userId: headers.userId,
     _id: id,
-  });
+  })
 
   if (!vocabulary) {
-    return new Response(JSON.stringify({ message: "Vocabulary not found" }), {
+    return new Response(JSON.stringify({ message: 'Vocabulary not found' }), {
       status: HTTP_CODE_ERRORS.BAD_REQUEST,
-    });
+    })
   }
 
   try {
-    await Vocabulary.deleteOne({ userId: headers.userId, _id: id });
+    await Vocabulary.deleteOne({ userId: headers.userId, _id: id })
     return new Response(
       JSON.stringify({
-        message: "Delete vocabulary successfully",
+        message: 'Delete vocabulary successfully',
       })
-    );
+    )
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    return new Response(JSON.stringify(error))
   }
-};
+}

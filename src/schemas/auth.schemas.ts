@@ -1,4 +1,4 @@
-import { t } from "elysia";
+import { t } from 'elysia'
 
 export const registerSchemas = {
   body: t.Object({
@@ -6,13 +6,13 @@ export const registerSchemas = {
     name: t.String(),
     password: t.String(),
   }),
-  type: "application/json",
-};
+  type: 'application/json',
+}
 
 export const loginSchemas = {
   body: t.Object({
     email: t.String(),
     password: t.String(),
   }),
-  type: "application/json",
-};
+  type: 'application/json',
+}

@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose'
 
 const categorySchema = new mongoose.Schema(
   {
@@ -11,7 +11,7 @@ const categorySchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     description: { type: String, required: true, maxLength: 300 },
@@ -20,7 +20,7 @@ const categorySchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-);
+)
 
-export type Category = mongoose.InferSchemaType<typeof categorySchema>;
-export const Category = mongoose.model("Category", categorySchema);
+export type TCategory = mongoose.InferSchemaType<typeof categorySchema>
+export const Category = mongoose.model('Category', categorySchema)

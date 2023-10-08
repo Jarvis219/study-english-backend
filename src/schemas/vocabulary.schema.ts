@@ -1,5 +1,5 @@
-import { authMiddleware } from "@/middlewares";
-import { t } from "elysia";
+import { authMiddleware } from '@/middlewares'
+import { t } from 'elysia'
 
 export const createVocabularySchemas = {
   beforeHandle: [authMiddleware],
@@ -18,8 +18,8 @@ export const createVocabularySchemas = {
     categoryId: t.String(),
     userId: t.Optional(t.String()),
   }),
-  type: "application/json",
-};
+  type: 'application/json',
+}
 
 export const updateVocabularySchemas = {
   beforeHandle: [authMiddleware],
@@ -38,23 +38,23 @@ export const updateVocabularySchemas = {
     categoryId: t.Optional(t.String()),
     userId: t.Optional(t.String()),
   }),
-  type: "application/json",
-};
+  type: 'application/json',
+}
 
 export const deleteVocabularySchemas = {
   beforeHandle: [authMiddleware],
   params: t.Object({
     id: t.String(),
   }),
-};
+}
 
 export const getVocabularySchemas = {
   beforeHandle: [authMiddleware],
-};
+}
 
 export const getVocabularyByIdSchemas = {
   beforeHandle: [authMiddleware],
   params: t.Object({
     id: t.String(),
   }),
-};
+}

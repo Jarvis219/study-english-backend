@@ -1,5 +1,5 @@
-import { authMiddleware } from "@/middlewares";
-import { t } from "elysia";
+import { authMiddleware } from '@/middlewares'
+import { t } from 'elysia'
 
 export const createCategorySchemas = {
   beforeHandle: [authMiddleware],
@@ -8,8 +8,8 @@ export const createCategorySchemas = {
     description: t.String(),
     image: t.String(),
   }),
-  type: "application/json",
-};
+  type: 'application/json',
+}
 
 export const updateCategorySchemas = {
   beforeHandle: [authMiddleware],
@@ -18,12 +18,12 @@ export const updateCategorySchemas = {
     description: t.Optional(t.String()),
     image: t.Optional(t.String()),
   }),
-  type: "application/json",
-};
+  type: 'application/json',
+}
 
 export const deleteCategorySchemas = {
   beforeHandle: [authMiddleware],
   params: t.Object({
     id: t.String(),
   }),
-};
+}
